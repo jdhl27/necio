@@ -1,0 +1,84 @@
+---
+import BaseHead from "../components/Head/BaseHead.astro";
+import Nav from "../components/Nav.astro";
+import HomeHeader from "../components/HomeHeader.astro";
+import Card from "../components/Card.astro";
+import Footer from "../components/Footer/Footer.astro";
+import EmailSignup from "../components/EmailSignup.astro";
+import Gallery from "../components/Gallery.astro";
+import ExternalScripts from "../components/ExternalScripts.astro";
+
+interface MarkdownFrontmatter {
+  date: number;
+}
+
+const title = "¡Nos encantan las ideas necias!";
+const description =
+  "Por eso creamos y editamos el mejor contenido audiovisual";
+const seoDescription = "Videos, edición, fotografia";
+
+const limitVideos = 6;
+
+const ID_CHANNEL_YOUTUBE = import.meta.env.PUBLIC_ID_CHANNEL_YOUTUBE;
+const API_KEY = import.meta.env.PUBLIC_API_KEY_GOOGLE;
+const URL_API = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${ID_CHANNEL_YOUTUBE}&part=snippet,id&order=date&maxResults=200`;
+
+const response = await fetch(URL_API);
+const data = await response.json();
+
+const filteredVideos = data?.items?.filter((item) => item.id.videoId);
+const updatedVideos = filteredVideos?.map((item) => ({
+  ...item,
+  snippet: {
+    ...item.snippet,
+    thumbnails: {
+      ...item.snippet.thumbnails,
+      default: {
+        ...item.snippet.thumbnails.default,
+        url: item.snippet.thumbnails.default.url.replace("default", "maxres2"),
+      },
+    },
+  },
+}));
+---
+
+<html lang="es">
+  <head>
+    <BaseHead title={title} description={seoDescription} />
+  </head>
+
+  <body class="bg-white text-black font-body leading-normal personality-casual">
+    <Nav />
+
+    <main class="py-12 lg:py-20">
+      <article class="max-w-6xl mx-auto px-3">
+        <HomeHeader title={title} description={description} />
+        <section
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8"
+          data-test="articles-section"
+        >
+          {
+            updatedVideos?.splice(0, limitVideos).map((video) => (
+              <div class="col-span-1">
+                <Card video={video} />
+              </div>
+            ))
+          }
+        </section>
+      </article>
+    </main>
+    <section class="flex space-x-8 mb-24 justify-center text-xl font-bold">
+      <a href="/videos" class="mr-8" data-test="see-all-link">
+        Ver todos los videos<span class="squiggle">&rarr;</span>
+      </a>
+    </section>
+
+    <Gallery title={title} description={description} />
+
+    <EmailSignup />
+
+    <Footer />
+
+    <ExternalScripts />
+  </body>
+</html>

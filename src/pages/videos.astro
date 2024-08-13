@@ -1,0 +1,71 @@
+---
+import BaseHead from "../components/Head/BaseHead.astro";
+import Nav from "../components/Nav.astro";
+import HomeHeader from "../components/HomeHeader.astro";
+import Card from "../components/Card.astro";
+import Footer from "../components/Footer/Footer.astro";
+import EmailSignup from "../components/EmailSignup.astro";
+
+interface MarkdownFrontmatter {
+  date: number;
+}
+
+const title = "Videos";
+const description = "";
+const seoDescription = "Videos, edición, fotografia";
+
+const ID_CHANNEL_YOUTUBE = import.meta.env.PUBLIC_ID_CHANNEL_YOUTUBE;
+const API_KEY = import.meta.env.PUBLIC_API_KEY_GOOGLE;
+const URL_API = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${ID_CHANNEL_YOUTUBE}&part=snippet,id&order=date&maxResults=200`;
+
+const response = await fetch(URL_API);
+const data = await response.json();
+
+const filteredVideos = data?.items?.filter((item) => item.id.videoId);
+const updatedVideos = filteredVideos?.map((item) => ({
+  ...item,
+  snippet: {
+    ...item.snippet,
+    thumbnails: {
+      ...item.snippet.thumbnails,
+      default: {
+        ...item.snippet.thumbnails.default,
+        url: item.snippet.thumbnails.default.url.replace("default", "maxres2"),
+      },
+    },
+  },
+}));
+
+---
+
+<html lang="es">
+  <head>
+    <BaseHead title={title} description={seoDescription} />
+  </head>
+
+  <body class="bg-white text-black font-body leading-normal personality-casual">
+    <Nav />
+
+    <main class="py-12 lg:py-20">
+      <article class="max-w-6xl mx-auto px-3">
+        <HomeHeader title={title} description={description} />
+        <section
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8"
+          data-test="articles-section"
+        >
+          {
+            updatedVideos?.map((video) => (
+              <div class="col-span-1">
+                <Card video={video} />
+              </div>
+            ))
+          }
+        </section>
+      </article>
+    </main>
+
+    <EmailSignup />
+
+    <Footer />
+  </body>
+</html>
