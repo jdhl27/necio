@@ -4,10 +4,12 @@ import { glob } from "glob";
 import HomeHeader from "./HomeHeader.astro";
 
 // Función para obtener las imágenes
+const environment = import.meta.env.PUBLIC_ENVIRONMENT;
+
 async function ImageFetcher(pattern: string) {
   const files = glob.sync(pattern, { posix: true });
   const imageFiles = files.map((file) => ({
-    src: file.replace("public", ""), // Remover "public" para las rutas en producción
+    src: environment == "prod" ? file : file.replace("public", ""), 
   }));
 
   imageFiles.sort((a, b) => a.src.localeCompare(b.src));
@@ -16,10 +18,7 @@ async function ImageFetcher(pattern: string) {
 }
 
 const pathDev = "public/images/gallery/*.{jpg,jpeg,png,webp}";
-const pathProd = "images/gallery/*.{jpg,jpeg,png,webp}";
-
-
-const environment = import.meta.env.ENVIRONMENT;
+const pathProd = "/images/gallery/*.{jpg,jpeg,png,webp}";
 
 let imageFiles = await ImageFetcher(
   environment === "prod" ? pathProd : pathDev
