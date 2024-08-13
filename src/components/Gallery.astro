@@ -1,16 +1,16 @@
 ---
-// import { Image } from "astro:assets";
+import { Image } from "astro:assets";
 import { glob } from "glob";
 import HomeHeader from "./HomeHeader.astro";
 
+// Función para obtener las imágenes
+const environment = import.meta.env.PUBLIC_ENVIRONMENT;
+
 async function ImageFetcher(pattern: string) {
   const files = glob.sync(pattern, { posix: true });
-  const imagePromises = files.map(async (file) => {
-    const src = file.replace("public", "");
-    return { src };
-  });
-
-  const imageFiles = await Promise.all(imagePromises);
+  const imageFiles = files.map((file) => ({
+    src: environment == "prod" ? file : file.replace("public", ""), 
+  }));
 
 
   imageFiles.sort((a, b) => a.src.localeCompare(b.src));
@@ -18,8 +18,11 @@ async function ImageFetcher(pattern: string) {
   return imageFiles;
 }
 
-const imageFiles = await ImageFetcher(
-  "public/images/gallery/*.{jpg,,jpeg,png,webp}"
+const pathDev = "public/images/gallery/*.{jpg,jpeg,png,webp}";
+const pathProd = "/images/gallery/*.{jpg,jpeg,png,webp}";
+
+let imageFiles = await ImageFetcher(
+  environment === "prod" ? pathProd : pathDev
 );
 ---
 
@@ -30,12 +33,7 @@ const imageFiles = await ImageFetcher(
     imageFiles.map((img) => (
       <article class="thumb">
         <a class="image" href={img.src}>
-          <img
-            src={img.src}
-            width="1200"
-            height="750"
-            alt="Astro Multiverse"
-          />
+          <Image src={img.src} width="1200" height="750" alt="Imagen" />
         </a>
         <h2 />
         <p />
