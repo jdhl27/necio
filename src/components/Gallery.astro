@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+// import { Image } from "astro:assets";
 import { glob } from "glob";
 import HomeHeader from "./HomeHeader.astro";
 
@@ -30,7 +30,7 @@ const imageFiles = await ImageFetcher(
     imageFiles.map((img) => (
       <article class="thumb">
         <a class="image" href={img.src}>
-          <Image
+          <img
             src={img.src}
             width="1200"
             height="750"
