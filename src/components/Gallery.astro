@@ -12,7 +12,6 @@ async function ImageFetcher(pattern: string) {
 
   const imageFiles = await Promise.all(imagePromises);
 
-  console.log("images", imageFiles);
 
   imageFiles.sort((a, b) => a.src.localeCompare(b.src));
 
