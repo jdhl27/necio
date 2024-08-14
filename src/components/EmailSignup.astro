@@ -50,7 +50,7 @@
 
   const PUBLIC_KEY = import.meta.env.PUBLIC_KEY;
 
-  const button = document.getElementById("button-form");
+  const button = document.getElementById("button-form") as HTMLButtonElement;
 
   if (!PUBLIC_KEY) {
     console.error("La clave pública de EmailJS no está definida.");
@@ -60,7 +60,8 @@
 
   async function onSubmit(e) {
     e.preventDefault();
-    button.style.display = "none";
+    button.disabled = true;
+    button.textContent = "Enviando...";
 
     const form = e.target;
 
@@ -83,7 +84,8 @@
           text: "Pronto nos pondremos en contacto",
           icon: "success",
         });
-        button.style.display = "block";
+        button.disabled = false;
+        button.textContent = "Contactar";
       },
       (error) => {
         Swal.fire({
@@ -91,7 +93,8 @@
           title: "Oops...",
           text: "algo pasó, intentalo luego",
         });
-        button.style.display = "block";
+        button.disabled = false;
+        button.textContent = "Contactar";
       }
     );
   }

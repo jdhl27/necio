@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email de Notificación</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Montserrat", "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      .flex {
+        display: flex;
+        justify-content: center;
+      }
+
+      .image-logo {
+        width: 8rem;
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: 1px solid #ddd;
+      }
+      .header {
+        background-color: rgb(68, 181, 161);
+        color: #ffffff;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .content {
+        padding: 20px;
+      }
+      .content p {
+        margin: 0 0 15px;
+        line-height: 1.6;
+      }
+      .content p strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+      }
+      .content .info {
+        margin-bottom: 20px;
+      }
+      .button {
+        display: inline-block;
+        padding: 15px 25px;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+      }
+      .button:hover {
+        opacity: 0.8;
+      }
+      .email-button {
+        background-color: rgb(253, 200, 88);
+      }
+      .email-button:hover {
+        background-color: rgb(178, 123, 4);
+      }
+      .whatsapp-button {
+        background-color: #25d366;
+      }
+      .whatsapp-button:hover {
+        background-color: #1ebea5;
+      }
+      @media (max-width: 600px) {
+        .container {
+          width: 90%;
+          margin: 10px auto;
+        }
+        .button {
+          width: 100%;
+          box-sizing: border-box;
+          margin: 5px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Nuevo Mensaje</h1>
+      </div>
+      <div class="content">
+        <div class="info">
+          <div class="flex">
+            <img
+              class="image-logo"
+              src="https://necio.netlify.app/images/logo_black2.png"
+            />
+          </div>
+          <p><strong>Correo:</strong> {{user_email}}</p>
+          <p><strong>Celular:</strong> {{user_phone}}</p>
+          <p><strong>Mensaje:</strong></p>
+          <p>{{user_message}}</p>
+        </div>
+        <a
+          target="_blank"
+          href="mailto:{{user_email}}?subject=Gracias por tu mensaje&body=Hola, te hablamos de Necio, creador audiovisual. Gracias por contactarte con nosotros. Quisiera que me cuentes más detalles de tu idea."
+          class="button email-button"
+          >Responder por Correo</a
+        >
+        <a
+          target="_blank"
+          href="https://wa.me/{{user_phone}}?text=Hola,%0Ate%20hablamos%20de%20Necio,%20creador%20audiovisual.%0AGracias%20por%20contactarte%20con%20nosotros.%0AQuisiera%20que%20me%20cuentes%20más%20detalles%20de%20tu%20idea."
+          class="button whatsapp-button"
+          >Responder por WhatsApp</a
+        >
+      </div>
+    </div>
+  </body>
+</html>
