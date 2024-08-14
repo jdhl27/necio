@@ -3,27 +3,20 @@ import { Image } from "astro:assets";
 import { glob } from "glob";
 import HomeHeader from "./HomeHeader.astro";
 
-// Función para obtener las imágenes
-const environment = import.meta.env.PUBLIC_ENVIRONMENT;
-
 async function ImageFetcher(pattern: string) {
   const files = glob.sync(pattern, { posix: true });
   const imageFiles = files.map((file) => ({
-    src: environment == "prod" ? file : file.replace("public", ""), 
+    src: file.replace("public", ""),
   }));
-
 
   imageFiles.sort((a, b) => a.src.localeCompare(b.src));
 
   return imageFiles;
 }
 
-const pathDev = "public/images/gallery/*.{jpg,jpeg,png,webp}";
-const pathProd = "/images/gallery/*.{jpg,jpeg,png,webp}";
+const path = "public/images/gallery/*.{jpg,jpeg,png,webp}";
 
-let imageFiles = await ImageFetcher(
-  environment === "prod" ? pathProd : pathDev
-);
+let imageFiles = await ImageFetcher(path);
 ---
 
 <HomeHeader title={"Galería"} description={""} />
