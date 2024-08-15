@@ -15,6 +15,8 @@
         placeholder="Correo"
         required
         data-test="subscribe-input"
+        oninvalid="this.setCustomValidity('Ingresa un correo válido')"
+        oninput="setCustomValidity('')"
       />
       <input
         name="user_phone"
@@ -23,12 +25,16 @@
         placeholder="Celular"
         required
         data-test="subscribe-input"
+        oninvalid="this.setCustomValidity('Ingresa el celular')"
+        oninput="setCustomValidity('')"
       />
       <textarea
         name="user_message"
         class="w-full bg-gray-200 py-3 px-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Mensaje"
         required
+        oninvalid="this.setCustomValidity('Ingresa un mensaje')"
+        oninput="setCustomValidity('')"
         data-test="subscribe-input"></textarea>
     </div>
     <button
