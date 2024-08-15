@@ -19,7 +19,11 @@ const path = "public/images/gallery/*.{jpg,jpeg,png,webp}";
 let imageFiles = await ImageFetcher(path);
 ---
 
-<HomeHeader title={"Galería"} description={""} />
+<HomeHeader
+  title={"Galería"}
+  description={""}
+  style="text-shadow: 1px 1px 2px #fdcb50;"
+/>
 
 <div id="main">
   {

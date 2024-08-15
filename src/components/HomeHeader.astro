@@ -1,12 +1,13 @@
 ---
 export interface Props {
-title: string;
-description: string;
+  title: string;
+  description: string;
+  style?: string;
 }
-const { title, description } = Astro.props;
+const { title, description, style } = Astro.props;
 ---
 
 <header class="mx-auto max-w-xl text-center content">
-  <h1 class="mb-4" data-test="header-title">{title}</h1>
+  <h1 class="mb-4" data-test="header-title" style={style}>{title}</h1>
   <p data-test="header-description">{description}</p>
 </header>

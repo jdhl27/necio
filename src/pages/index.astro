@@ -52,7 +52,11 @@ const updatedVideos = filteredVideos?.map((item) => ({
 
     <main class="py-12 lg:py-20">
       <article class="max-w-6xl mx-auto px-3">
-        <HomeHeader title={title} description={description} />
+        <HomeHeader
+          title={title}
+          description={description}
+          style="text-shadow: 2px 3px 2px #40b29f;"
+        />
         <section
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8"
           data-test="articles-section"
@@ -68,7 +72,7 @@ const updatedVideos = filteredVideos?.map((item) => ({
       </article>
     </main>
     <section class="flex space-x-8 mb-24 justify-center text-xl font-bold">
-      <a href="/videos" class="mr-8" data-test="see-all-link">
+      <a href="/videos" class="mr-8 underline" data-test="see-all-link">
         Ver todos los videos<span class="squiggle">&rarr;</span>
       </a>
     </section>
