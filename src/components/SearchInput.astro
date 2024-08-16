@@ -144,7 +144,7 @@
       if (!results.length) {
         let resultPage = document.createElement("div");
         resultPage.className = "searchResultPage";
-        resultPage.innerHTML = 'No results found for query "' + query + '"';
+        resultPage.innerHTML = 'No encontré nada con "' + query + '"';
         searchResults.append(resultPage);
         return;
       }
@@ -154,6 +154,26 @@
       results.slice(0, MAX_PAGES).forEach((result, idx) => {
         let resultPage = document.createElement("div");
         resultPage.className = "searchResultPage";
+
+        // Create the link element wrapping image and text
+        let resultLink = document.createElement("a");
+        resultLink.href = `https://www.youtube.com/watch?v=${result.videoId}`;
+        resultLink.target = "_blank";
+        resultLink.className = "searchResultLink";
+        resultPage.append(resultLink);
+
+        // Wrapper for image and text
+        let resultContent = document.createElement("div");
+        resultContent.className = "searchResultContent";
+        resultLink.append(resultContent);
+
+        // Add image element
+        let resultImage = document.createElement("img");
+        resultImage.className = "searchResultImage";
+        resultImage.src = result.image;
+        resultImage.alt = result.title;
+        resultContent.append(resultImage);
+
         let metadata = lunrResult[idx].matchData.metadata;
         let matchPosition = 0;
 
@@ -172,12 +192,14 @@
             ? matchPosition - BODY_LENGTH / 2
             : 0;
 
-        let resultTitle = document.createElement("a");
+        let textWrapper = document.createElement("div");
+        textWrapper.className = "searchResultText";
+        resultContent.append(textWrapper);
+
+        let resultTitle = document.createElement("div");
         resultTitle.className = "searchResultTitle";
-        resultTitle.href = `https://www.youtube.com/watch?v=${result.videoId}`;
-        resultTitle.target = "_blank";
         resultTitle.innerHTML = result.title;
-        resultPage.append(resultTitle);
+        textWrapper.append(resultTitle);
 
         let resultBody = document.createElement("div");
         resultBody.className = "searchResultBody";
@@ -185,7 +207,8 @@
           bodyStartPosition,
           BODY_LENGTH
         );
-        resultPage.append(resultBody);
+        textWrapper.append(resultBody);
+
         searchResults.append(resultPage);
 
         instance.mark(query);

@@ -52,4 +52,20 @@
   display: none;
 }
 
+// Buscador
 
+.searchResultContent {
+  display: flex;
+  align-items: center;
+}
+
+.searchResultImage {
+  max-width: 6rem;
+  margin-right: 10px;
+  object-fit: cover;
+  border: 3px solid #fe2d78;
+}
+
+.searchResultText {
+  flex: 1;
+}
