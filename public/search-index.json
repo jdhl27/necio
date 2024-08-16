@@ -172,7 +172,7 @@
     {
         "slug": "valentina-gonzales-artista-plastica",
         "category": "video",
-        "title": "Valentina Gonzales  Artista Plástica",
+        "title": "Valentina Gonzales Artista Plástica",
         "description": "",
         "tags": [],
         "body": "",
@@ -182,7 +182,7 @@
     {
         "slug": "estefania-restrepo-artista-plastica",
         "category": "video",
-        "title": "Estefanía  Restrepo Artista Plástica",
+        "title": "Estefanía Restrepo Artista Plástica",
         "description": "",
         "tags": [],
         "body": "",
@@ -202,7 +202,7 @@
     {
         "slug": "cristian-gaviria-artista-plastico",
         "category": "video",
-        "title": "Cristian  Gaviria Artista plástico",
+        "title": "Cristian Gaviria Artista plástico",
         "description": "",
         "tags": [],
         "body": "",
@@ -212,11 +212,21 @@
     {
         "slug": "andres-saul-arango-artista-plastico",
         "category": "video",
-        "title": "Andrés  Saúl Arango Artista Plástico",
+        "title": "Andrés Saúl Arango Artista Plástico",
         "description": "",
         "tags": [],
         "body": "",
         "videoId": "EfPCRcUFjuQ",
         "image": "https://i.ytimg.com/vi/EfPCRcUFjuQ/maxres2.jpg"
+    },
+    {
+        "slug": "educacion-musica-y-libertad",
+        "category": "video",
+        "title": "educación Música y Libertad",
+        "description": "",
+        "tags": [],
+        "body": "",
+        "videoId": "jAl7wpbbECM",
+        "image": "https://i.ytimg.com/vi/jAl7wpbbECM/maxres2.jpg"
     }
 ]
