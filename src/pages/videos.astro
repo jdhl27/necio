@@ -30,7 +30,6 @@ const videos = await fetchVideos();
     <div
       class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
       data-test="articles-section"
-      data-reveal-stagger
     >
       {videos.map((video) => <Card video={video} />)}
     </div>

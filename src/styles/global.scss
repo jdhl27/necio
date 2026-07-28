@@ -75,52 +75,11 @@ body::after {
   }
 }
 
-/* ============================================
-   Reveal al scroll
-   El estado oculto solo se aplica si JS marcó
-   <html class="reveal-init"> — sin JS, todo visible.
-   ============================================ */
-.reveal-init [data-reveal] {
-  opacity: 0;
-  transform: translateY(22px);
-  transition:
-    opacity 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
-    clip-path 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-  transition-delay: var(--reveal-delay, 0s);
-}
-
-/* Entra desde la izquierda, como créditos de cine */
-.reveal-init [data-reveal="left"] {
-  transform: translateX(-32px);
-}
-
-/* Barrido: el texto se desenmascara de arriba hacia abajo mientras sube */
-.reveal-init [data-reveal="wipe"] {
-  clip-path: inset(0 0 100% 0);
-  transform: translateY(8%);
-}
-
-.reveal-init [data-reveal].revealed {
-  opacity: 1;
-  transform: none;
-}
-
-.reveal-init [data-reveal="wipe"].revealed {
-  clip-path: inset(0 0 -12% 0);
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   .slate::before {
     animation: none;
-  }
-  .reveal-init [data-reveal] {
-    opacity: 1;
-    transform: none;
-    clip-path: none;
-    transition: none;
   }
 }
