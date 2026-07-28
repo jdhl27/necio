@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Gallery from "../components/Gallery.astro";
+
+const title = "Galería | Necio";
+const seoDescription =
+  "La galería fotográfica completa de Necio: retratos, rodajes y proyectos.";
+---
+
+<Layout title={title} description={seoDescription}>
+  <main>
+    <Gallery
+      num="Archivo — Fotografía"
+      title="Toda la galería"
+      sub="El archivo fotográfico completo, de la foto más nueva a la más vieja."
+    />
+  </main>
+</Layout>

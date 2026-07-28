@@ -1,40 +1,312 @@
 ---
-import { Image } from "astro:assets";
 import { glob } from "glob";
-import HomeHeader from "./HomeHeader.astro";
+import SectionHeader from "./SectionHeader.astro";
+import { fetchGalleryImages } from "../lib/cloudinary";
 
-async function ImageFetcher(pattern: string) {
-  const files = glob.sync(pattern, { posix: true });
-  const imageFiles = files.map((file) => ({
-    src: file.replace("public", ""),
-  }));
-
-  imageFiles.sort((a, b) => a.src.localeCompare(b.src));
-
-  return imageFiles;
+export interface Props {
+  num?: string;
+  title?: string;
+  sub?: string;
+  /** Máximo de fotos a mostrar; 0 = todas */
+  limit?: number;
+  /** Muestra el botón "Ver todas" hacia /galeria */
+  allLink?: boolean;
 }
 
-const path = "public/images/gallery/*.{jpg,jpeg,png,webp}";
+const {
+  num = "05 — Fotografía",
+  title = "Galería",
+  sub = "Una muestra de lo que hacemos con la cámara cuando no está grabando.",
+  limit = 0,
+  allLink = false,
+} = Astro.props;
 
-let imageFiles = await ImageFetcher(path);
+interface GalleryItem {
+  src: string;
+  full?: string;
+  width?: number;
+  height?: number;
+}
+
+// Primero Cloudinary desde el servidor (con dimensiones conocidas para
+// reservar el espacio y evitar saltos de layout). Las fotos del repo son
+// solo el plan B si Cloudinary está vacío o sin configurar.
+let images: GalleryItem[] = await fetchGalleryImages();
+
+if (images.length === 0) {
+  const files = glob.sync("public/images/gallery/*.{jpg,jpeg,png,webp}", {
+    posix: true,
+  });
+  images = files.map((file) => ({ src: file.replace("public", "") })).sort(
+    (a, b) => a.src.localeCompare(b.src)
+  );
+}
+
+if (limit > 0) {
+  images = images.slice(0, limit);
+}
+
+const ratio = (img: GalleryItem) =>
+  img.width && img.height ? `${img.width} / ${img.height}` : "3 / 2";
 ---
 
-<HomeHeader
-  title={"Galería"}
-  description={""}
-  style="text-shadow: 1px 1px 2px #fdcb50;"
-/>
+<section id="galeria" class="scroll-mt-24 border-t border-line">
+  <div class="mx-auto max-w-wrap px-4 py-20 sm:px-6 lg:py-28">
+    <SectionHeader num={num} title={title} sub={sub}>
+      {
+        allLink && (
+          <a
+            href="/galeria"
+            class="display border border-cream/40 px-6 py-3 text-lg transition-colors hover:border-yellow hover:text-yellow"
+          >
+            Ver todas &rarr;
+          </a>
+        )
+      }
+    </SectionHeader>
 
-<div id="main">
-  {
-    imageFiles.map((img) => (
-      <article class="thumb">
-        <a class="image" href={img.src}>
-          <Image src={img.src} width="1200" height="750" alt="Imagen" />
-        </a>
-        <h2 />
-        <p />
-      </article>
-    ))
+    <div
+      class="columns-1 gap-4 sm:columns-2 lg:columns-3"
+      id="gallery-grid"
+      data-limit={limit}
+      data-reveal-stagger
+    >
+      {
+        images.map((img, i) => (
+          <button
+            type="button"
+            class="gallery-item group relative mb-4 block w-full overflow-hidden border border-line focus:outline-none focus-visible:border-yellow"
+            style={`aspect-ratio: ${ratio(img)}`}
+            data-index={i}
+            data-src={img.full ?? img.src}
+            aria-label={`Ampliar imagen ${i + 1} de ${images.length}`}
+          >
+            <img
+              src={img.src}
+              alt={`Fotografía ${i + 1} de la galería de Necio`}
+              loading="lazy"
+              width={img.width}
+              height={img.height}
+              class="h-full w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-110"
+            />
+            <span class="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-ink/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span class="display p-3 text-lg text-yellow">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+            </span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<dialog
+  id="lightbox"
+  class="m-auto w-[min(64rem,92vw)] border border-line bg-ink p-0 backdrop:bg-ink/90"
+>
+  <div class="relative">
+    <img id="lightbox-img" src="" alt="Fotografía ampliada" class="max-h-[80vh] w-full object-contain" />
+    <div
+      class="flex items-center justify-between border-t border-line px-4 py-3"
+    >
+      <span id="lightbox-counter" class="slate"></span>
+      <div class="flex gap-2">
+        <button
+          type="button"
+          id="lightbox-prev"
+          aria-label="Imagen anterior"
+          class="border border-line px-4 py-2 text-cream transition-colors hover:border-yellow hover:text-yellow"
+        >
+          &larr;
+        </button>
+        <button
+          type="button"
+          id="lightbox-next"
+          aria-label="Imagen siguiente"
+          class="border border-line px-4 py-2 text-cream transition-colors hover:border-yellow hover:text-yellow"
+        >
+          &rarr;
+        </button>
+        <button
+          type="button"
+          id="lightbox-close"
+          aria-label="Cerrar"
+          class="border border-line px-4 py-2 text-cream transition-colors hover:border-pink hover:text-pink"
+        >
+          &#10005;
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style is:global>
+  /* Skeleton: shimmer mientras carga cada foto */
+  .gallery-item {
+    background: linear-gradient(
+      100deg,
+      #14141c 40%,
+      #1d1d27 50%,
+      #14141c 60%
+    );
+    background-size: 200% 100%;
+    animation: gallery-shimmer 1.6s linear infinite;
   }
-</div>
+
+  .gallery-item img {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .gallery-item img.img-loaded {
+    opacity: 1;
+  }
+
+  @keyframes gallery-shimmer {
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-item {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const grid = document.getElementById("gallery-grid") as HTMLElement;
+  const lightbox = document.getElementById("lightbox") as HTMLDialogElement;
+  const lightboxImg = document.getElementById(
+    "lightbox-img"
+  ) as HTMLImageElement;
+  const counter = document.getElementById("lightbox-counter");
+  let current = 0;
+
+  const items = () =>
+    [...grid.querySelectorAll<HTMLElement>(".gallery-item")];
+
+  // Fade-in de cada foto cuando termina de cargar
+  function watchLoading(scope: HTMLElement) {
+    scope.querySelectorAll("img").forEach((img) => {
+      if (img.complete && img.naturalWidth > 0) {
+        img.classList.add("img-loaded");
+      } else {
+        img.addEventListener(
+          "load",
+          () => img.classList.add("img-loaded"),
+          { once: true }
+        );
+      }
+    });
+  }
+
+  watchLoading(grid);
+
+  function show(index: number) {
+    const all = items();
+    current = (index + all.length) % all.length;
+    lightboxImg.src = all[current].dataset.src ?? "";
+    if (counter) {
+      counter.textContent = `${String(current + 1).padStart(2, "0")} / ${String(all.length).padStart(2, "0")}`;
+    }
+  }
+
+  // Delegación: funciona igual con las fotos del servidor o las refrescadas
+  grid.addEventListener("click", (e) => {
+    const button = (e.target as HTMLElement).closest<HTMLElement>(
+      ".gallery-item"
+    );
+    if (!button) return;
+    show(Number(button.dataset.index));
+    lightbox.showModal();
+  });
+
+  document
+    .getElementById("lightbox-prev")
+    ?.addEventListener("click", () => show(current - 1));
+  document
+    .getElementById("lightbox-next")
+    ?.addEventListener("click", () => show(current + 1));
+  document
+    .getElementById("lightbox-close")
+    ?.addEventListener("click", () => lightbox.close());
+
+  lightbox.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") show(current - 1);
+    if (e.key === "ArrowRight") show(current + 1);
+  });
+
+  // Cerrar al hacer clic fuera de la imagen
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) lightbox.close();
+  });
+
+  // Refresca desde Cloudinary SOLO si la lista cambió desde el build
+  // (así las fotos nuevas aparecen sin redesplegar, pero sin parpadeos)
+  interface RemoteImage {
+    src: string;
+    full: string;
+    width: number;
+    height: number;
+  }
+
+  fetch("/galeria.json")
+    .then((r) => (r.ok ? r.json() : []))
+    .then((all: RemoteImage[]) => {
+      if (!Array.isArray(all) || all.length === 0) return;
+
+      const limit = Number(grid.dataset.limit || 0);
+      const images = limit > 0 ? all.slice(0, limit) : all;
+
+      const currentSrcs = items()
+        .map((b) => b.dataset.src)
+        .join("|");
+      const nextSrcs = images.map((img) => img.full ?? img.src).join("|");
+      if (currentSrcs === nextSrcs) return;
+
+      grid.innerHTML = "";
+      images.forEach((img, i) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className =
+          "gallery-item group relative mb-4 block w-full overflow-hidden border border-line focus:outline-none focus-visible:border-yellow";
+        button.style.aspectRatio = `${img.width} / ${img.height}`;
+        button.dataset.index = String(i);
+        button.dataset.src = img.full ?? img.src;
+        button.setAttribute(
+          "aria-label",
+          `Ampliar imagen ${i + 1} de ${images.length}`
+        );
+
+        const image = document.createElement("img");
+        image.src = img.src;
+        image.alt = `Fotografía ${i + 1} de la galería de Necio`;
+        image.loading = "lazy";
+        image.width = img.width;
+        image.height = img.height;
+        image.className =
+          "h-full w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-110";
+
+        const overlay = document.createElement("span");
+        overlay.className =
+          "pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-ink/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100";
+
+        const number = document.createElement("span");
+        number.className = "display p-3 text-lg text-yellow";
+        number.textContent = String(i + 1).padStart(2, "0");
+        overlay.append(number);
+
+        button.append(image, overlay);
+        grid.append(button);
+      });
+
+      watchLoading(grid);
+    })
+    .catch(() => {
+      /* si falla, se queda lo renderizado en el servidor */
+    });
+</script>
