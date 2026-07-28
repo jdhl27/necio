@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <title>Nuevo mensaje — Necio</title>
+    <!--
+      Plantilla de notificación de EmailJS (formulario de contacto del sitio).
+      Variables: {{user_email}}, {{user_phone}}, {{user_phone_wa}}, {{user_message}}
+      Maquetada con tablas y estilos inline: es lo único que respetan
+      Gmail y Outlook. El <style> de abajo es solo mejora progresiva.
+    -->
+    <style>
+      @media (max-width: 620px) {
+        .btn-cell {
+          display: block !important;
+          width: 100% !important;
+          padding: 0 0 10px 0 !important;
+        }
+        .btn-cell a {
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #0b0b10">
+    <!-- Texto de vista previa en la bandeja de entrada -->
+    <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all">
+      Nuevo mensaje de {{user_email}} desde el formulario del sitio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background-color: #0b0b10"
+    >
+      <tr>
+        <td align="center" style="padding: 32px 16px">
+          <table
+            role="presentation"
+            width="600"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 600px; width: 100%"
+          >
+            <!-- Cabecera -->
+            <tr>
+              <td
+                style="
+                  background-color: #ffc933;
+                  padding: 28px 32px;
+                  text-align: center;
+                "
+              >
+                <img
+                  src="https://necio.netlify.app/images/logo_black2.png"
+                  alt="Necio"
+                  width="90"
+                  style="display: block; margin: 0 auto 14px; width: 90px; height: auto"
+                />
+                <h1
+                  style="
+                    margin: 0;
+                    font-family: 'Arial Black', Arial, sans-serif;
+                    font-size: 24px;
+                    line-height: 1.15;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    color: #0b0b10;
+                  "
+                >
+                  Nuevo mensaje
+                </h1>
+                <p
+                  style="
+                    margin: 6px 0 0;
+                    font-family: Arial, sans-serif;
+                    font-size: 13px;
+                    color: #0b0b10;
+                  "
+                >
+                  Alguien escribió desde el formulario del sitio
+                </p>
+              </td>
+            </tr>
+
+            <!-- Datos del contacto -->
+            <tr>
+              <td style="background-color: #ffffff; padding: 32px">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding-bottom: 18px">
+                      <p
+                        style="
+                          margin: 0 0 3px;
+                          font-family: Arial, sans-serif;
+                          font-size: 11px;
+                          letter-spacing: 2px;
+                          text-transform: uppercase;
+                          color: #9b98a0;
+                        "
+                      >
+                        Correo
+                      </p>
+                      <p
+                        style="
+                          margin: 0;
+                          font-family: Arial, sans-serif;
+                          font-size: 16px;
+                          font-weight: bold;
+                          color: #0b0b10;
+                        "
+                      >
+                        <a
+                          href="mailto:{{user_email}}"
+                          style="color: #0b0b10; text-decoration: none"
+                          >{{user_email}}</a
+                        >
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom: 18px">
+                      <p
+                        style="
+                          margin: 0 0 3px;
+                          font-family: Arial, sans-serif;
+                          font-size: 11px;
+                          letter-spacing: 2px;
+                          text-transform: uppercase;
+                          color: #9b98a0;
+                        "
+                      >
+                        Celular
+                      </p>
+                      <p
+                        style="
+                          margin: 0;
+                          font-family: Arial, sans-serif;
+                          font-size: 16px;
+                          font-weight: bold;
+                          color: #0b0b10;
+                        "
+                      >
+                        {{user_phone}}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p
+                        style="
+                          margin: 0 0 8px;
+                          font-family: Arial, sans-serif;
+                          font-size: 11px;
+                          letter-spacing: 2px;
+                          text-transform: uppercase;
+                          color: #9b98a0;
+                        "
+                      >
+                        Mensaje
+                      </p>
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td
+                            style="
+                              background-color: #faf7ef;
+                              border-left: 4px solid #ffc933;
+                              padding: 16px 18px;
+                            "
+                          >
+                            <p
+                              style="
+                                margin: 0;
+                                font-family: Arial, sans-serif;
+                                font-size: 15px;
+                                line-height: 1.6;
+                                color: #33323a;
+                                white-space: pre-line;
+                              "
+                            >
+                              {{user_message}}
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Botones -->
+                <table
+                  role="presentation"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="margin: 28px auto 0"
+                >
+                  <tr>
+                    <td class="btn-cell" style="padding-right: 10px">
+                      <a
+                        href="mailto:{{user_email}}?subject=Gracias%20por%20escribirle%20a%20Necio&body=Hola%2C%20te%20hablamos%20de%20Necio%2C%20productora%20audiovisual.%20Gracias%20por%20escribirnos.%20Cu%C3%A9ntanos%20m%C3%A1s%20detalles%20de%20tu%20idea%20y%20miramos%20c%C3%B3mo%20la%20hacemos%20realidad."
+                        style="
+                          display: inline-block;
+                          background-color: #0b0b10;
+                          padding: 14px 24px;
+                          font-family: Arial, sans-serif;
+                          font-size: 14px;
+                          font-weight: bold;
+                          color: #ffc933;
+                          text-decoration: none;
+                          border-radius: 4px;
+                          text-align: center;
+                        "
+                        >Responder por correo</a
+                      >
+                    </td>
+                    <td class="btn-cell">
+                      <a
+                        href="https://wa.me/{{user_phone_wa}}?text=Hola%2C%20te%20hablamos%20de%20Necio%2C%20productora%20audiovisual.%20Gracias%20por%20escribirnos.%20Cu%C3%A9ntanos%20m%C3%A1s%20detalles%20de%20tu%20idea%20y%20miramos%20c%C3%B3mo%20la%20hacemos%20realidad."
+                        style="
+                          display: inline-block;
+                          background-color: #25d366;
+                          padding: 14px 24px;
+                          font-family: Arial, sans-serif;
+                          font-size: 14px;
+                          font-weight: bold;
+                          color: #ffffff;
+                          text-decoration: none;
+                          border-radius: 4px;
+                          text-align: center;
+                        "
+                        >Responder por WhatsApp</a
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Pie -->
+            <tr>
+              <td
+                style="
+                  background-color: #14141c;
+                  padding: 18px 32px;
+                  text-align: center;
+                "
+              >
+                <p
+                  style="
+                    margin: 0;
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                    color: #9b98a0;
+                  "
+                >
+                  Enviado automáticamente por el formulario de
+                  <a
+                    href="https://necio.netlify.app"
+                    style="color: #ffc933; text-decoration: none"
+                    >necio.netlify.app</a
+                  >
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
