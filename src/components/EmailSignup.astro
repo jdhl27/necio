@@ -1,54 +1,127 @@
-<aside class="text-center py-16 max-w-3xl mx-auto">
-  <div class="w-full border-t-2 mb-8 border-black squiggle"></div>
-  <h3 class="font-display text-4xl uppercase font-bold leading-none">
-    Déjanos un mensaje
-  </h3>
-  <form
-    class="mt-8 flex flex-col px-6 items-center md:w-2/3 mx-auto gap-4"
-    id="form"
-  >
-    <div class="w-full flex flex-col gap-4 md:gap-6">
-      <input
-        name="user_email"
-        class="w-full bg-gray-200 py-3 px-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        type="email"
-        placeholder="Correo"
-        required
-        data-test="subscribe-input"
-        oninvalid="this.setCustomValidity('Ingresa un correo válido')"
-        oninput="setCustomValidity('')"
-      />
-      <input
-        name="user_phone"
-        class="w-full bg-gray-200 py-3 px-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        type="text"
-        placeholder="Celular"
-        required
-        data-test="subscribe-input"
-        oninvalid="this.setCustomValidity('Ingresa el celular')"
-        oninput="setCustomValidity('')"
-      />
-      <textarea
-        name="user_message"
-        class="w-full bg-gray-200 py-3 px-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Mensaje"
-        required
-        oninvalid="this.setCustomValidity('Ingresa un mensaje')"
-        oninput="setCustomValidity('')"
-        data-test="subscribe-input"></textarea>
-    </div>
-    <button
-      class="bg-blue-500 mt-4 md:mt-0 w-full md:w-auto text-white py-3 px-6 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      type="submit"
-      id="button-form"
-      data-test="subscribe-submit-btn"
-    >
-      Contactar
-    </button>
-  </form>
+---
 
-  <div class="w-full border-b-2 pt-12 border-black squiggle"></div>
-</aside>
+---
+
+<section
+  id="contacto"
+  class="relative scroll-mt-24 overflow-hidden border-t border-line bg-surface"
+>
+  <!-- Resplandor de cierre, eco del hero -->
+  <div
+    class="pointer-events-none absolute -left-40 bottom-0 h-[28rem] w-[28rem] rounded-full bg-yellow opacity-[0.06] blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-wrap px-4 py-20 sm:px-6 lg:py-28">
+    <div class="grid gap-14 lg:grid-cols-2 lg:gap-20">
+      <!-- El llamado -->
+      <div>
+        <p class="slate" data-reveal>06 &mdash; Contacto</p>
+
+        <h2
+          class="display mt-8 text-fluid-title leading-none"
+          data-reveal="wipe"
+        >
+          ¿Tienes una idea necia?
+        </h2>
+        <p
+          class="display mt-3 text-[clamp(3.5rem,8vw,6.5rem)] leading-none text-yellow"
+          data-reveal="wipe"
+          style="--reveal-delay: 0.15s"
+        >
+          Hablemos<span class="text-pink">.</span>
+        </p>
+
+        <p class="mt-8 max-w-md text-muted">
+          Un video para tu marca, un documental, unas fotos, o algo que
+          todavía no sabes ni cómo se llama. Escríbenos qué tienes en mente
+          y miramos juntos cómo hacerlo.
+        </p>
+
+        <!-- Canales directos -->
+        <div class="mt-10 flex flex-wrap gap-3">
+          <a
+            href="mailto:necioaudiovisual@gmail.com"
+            class="border border-line px-5 py-3 text-xs font-medium uppercase tracking-widecaps text-cream/80 transition-colors hover:border-yellow hover:text-yellow"
+          >
+            necioaudiovisual@gmail.com &nearr;
+          </a>
+          <a
+            href="https://www.instagram.com/necio.audiovisual/"
+            target="_blank"
+            rel="noopener"
+            class="border border-line px-5 py-3 text-xs font-medium uppercase tracking-widecaps text-cream/80 transition-colors hover:border-pink hover:text-pink"
+          >
+            @necio.audiovisual &nearr;
+          </a>
+        </div>
+      </div>
+
+      <!-- El formulario -->
+      <form class="flex flex-col gap-8 lg:pt-4" id="form" data-reveal-stagger>
+        <label class="flex flex-col gap-2">
+          <span class="text-xs uppercase tracking-widecaps text-muted"
+            >01 &mdash; Tu correo</span
+          >
+          <input
+            name="user_email"
+            class="border-0 border-b border-line bg-transparent py-3 text-lg text-cream placeholder:text-muted/50 focus:border-yellow focus:outline-none focus:ring-0"
+            type="email"
+            placeholder="tu@correo.com"
+            required
+            data-test="subscribe-input"
+            oninvalid="this.setCustomValidity('Ingresa un correo válido')"
+            oninput="setCustomValidity('')"
+          />
+        </label>
+
+        <label class="flex flex-col gap-2">
+          <span class="text-xs uppercase tracking-widecaps text-muted"
+            >02 &mdash; Tu celular</span
+          >
+          <input
+            name="user_phone"
+            class="border-0 border-b border-line bg-transparent py-3 text-lg text-cream placeholder:text-muted/50 focus:border-yellow focus:outline-none focus:ring-0"
+            type="text"
+            placeholder="300 000 0000"
+            required
+            data-test="subscribe-input"
+            oninvalid="this.setCustomValidity('Ingresa el celular')"
+            oninput="setCustomValidity('')"
+          />
+        </label>
+        <!-- Celular normalizado para el enlace de WhatsApp de la plantilla -->
+        <input type="hidden" name="user_phone_wa" />
+
+        <label class="flex flex-col gap-2">
+          <span class="text-xs uppercase tracking-widecaps text-muted"
+            >03 &mdash; La idea</span
+          >
+          <textarea
+            name="user_message"
+            rows="4"
+            class="border-0 border-b border-line bg-transparent py-3 text-lg text-cream placeholder:text-muted/50 focus:border-yellow focus:outline-none focus:ring-0"
+            placeholder="Cuéntanos qué quieres crear…"
+            required
+            oninvalid="this.setCustomValidity('Ingresa un mensaje')"
+            oninput="setCustomValidity('')"
+            data-test="subscribe-input"></textarea>
+        </label>
+
+        <button
+          class="display mt-2 bg-yellow px-8 py-5 text-xl text-ink transition-transform duration-200 hover:-translate-y-1 hover:rotate-1 disabled:cursor-not-allowed disabled:opacity-60"
+          type="submit"
+          id="button-form"
+          data-test="subscribe-submit-btn"
+        >
+          Enviar la idea &rarr;
+        </button>
+        <p class="-mt-4 text-xs text-muted">Respondemos rápido. De verdad.</p>
+      </form>
+    </div>
+  </div>
+</section>
 
 <script>
   import emailjs from "@emailjs/browser";
@@ -57,6 +130,7 @@
   const PUBLIC_KEY = import.meta.env.PUBLIC_KEY;
 
   const button = document.getElementById("button-form") as HTMLButtonElement;
+  const form = document.getElementById("form") as HTMLFormElement;
 
   if (!PUBLIC_KEY) {
     console.error("La clave pública de EmailJS no está definida.");
@@ -64,12 +138,19 @@
     emailjs.init(PUBLIC_KEY);
   }
 
-  async function onSubmit(e) {
+  async function onSubmit(e: SubmitEvent) {
     e.preventDefault();
     button.disabled = true;
     button.textContent = "Enviando...";
 
-    const form = e.target;
+    // wa.me solo acepta dígitos con indicativo: "300 123 4567" -> "573001234567"
+    const phone = (form.elements.namedItem("user_phone") as HTMLInputElement)
+      .value;
+    const digits = phone.replace(/\D/g, "");
+    const phoneWa =
+      digits.length === 10 && digits.startsWith("3") ? `57${digits}` : digits;
+    (form.elements.namedItem("user_phone_wa") as HTMLInputElement).value =
+      phoneWa;
 
     const SERVICE = import.meta.env.PUBLIC_SERVICE_EMAIL;
     const TEMPLATE = import.meta.env.PUBLIC_TEMPLATE_EMAIL;
@@ -84,26 +165,26 @@
     emailjs.sendForm(SERVICE, TEMPLATE, form).then(
       (response) => {
         console.log("ÉXITO!", response.status, response.text);
-        document.getElementById("form").reset();
+        form.reset();
         Swal.fire({
           title: "¡Gracias!",
           text: "Pronto nos pondremos en contacto",
           icon: "success",
         });
         button.disabled = false;
-        button.textContent = "Contactar";
+        button.textContent = "Enviar la idea →";
       },
-      (error) => {
+      () => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
           text: "algo pasó, intentalo luego",
         });
         button.disabled = false;
-        button.textContent = "Contactar";
+        button.textContent = "Enviar la idea →";
       }
     );
   }
 
-  document.getElementById("form").addEventListener("submit", onSubmit);
+  form.addEventListener("submit", onSubmit);
 </script>

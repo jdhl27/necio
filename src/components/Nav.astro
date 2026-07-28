@@ -1,35 +1,283 @@
 ---
+const links = [
+  { href: "/#servicios", label: "Servicios" },
+  { href: "/videos", label: "Videos" },
+  { href: "/galeria", label: "Galería" },
+  { href: "/#contacto", label: "Contacto" },
+];
 
+// Numeración igual a la de las secciones de la home
+const menuLinks = [
+  { num: "00", href: "/", label: "Inicio" },
+  { num: "01", href: "/#servicios", label: "Servicios" },
+  { num: "02", href: "/videos", label: "Videos" },
+  { num: "03", href: "/#aliados", label: "Aliados" },
+  { num: "04", href: "/#nosotros", label: "El porqué" },
+  { num: "05", href: "/galeria", label: "Galería" },
+  { num: "06", href: "/#contacto", label: "Contacto" },
+];
 ---
 
-<nav>
+<nav class="sticky top-0 z-50 border-b border-line bg-ink/80 backdrop-blur-md">
   <div
-    class="max-w-5xl mx-auto px-3 py-3 flex items-center justify-between h-30"
+    class="mx-auto flex max-w-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6"
   >
-    <a href="/" class="font-bold text-xl hover:text-hot-pink">
+    <a href="/" class="shrink-0" aria-label="Necio — inicio">
       <img
         src="/images/logo_black2.png"
         alt="Necio"
-        width="120"
-        height="120"
-        style="filter: drop-shadow(1px 3px 1px #4c267b);"
+        width="72"
+        height="60"
+        class="h-10 w-auto invert transition-transform duration-300 hover:-rotate-6 sm:h-14"
       />
     </a>
-    <a href="/buscar" class="">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
+
+    <!-- Enlaces de escritorio -->
+    <div class="hidden items-center gap-8 md:flex">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm font-medium uppercase tracking-widecaps text-cream/80 transition-colors hover:text-yellow"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href="/buscar"
+        aria-label="Buscar videos"
+        class="rounded-full border border-line p-2 text-cream/80 transition-colors hover:border-yellow hover:text-yellow"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-      </svg>
-    </a>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Menú completo (todas las pantallas) -->
+    <button
+      type="button"
+      id="menu-toggle"
+      class="relative flex h-11 w-11 items-center justify-center border border-line transition-colors hover:border-yellow"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="menu-overlay"
+    >
+      <span class="burger-line" aria-hidden="true"></span>
+      <span class="burger-line" aria-hidden="true"></span>
+    </button>
   </div>
-  <div class="w-full border-b-2 border-black squiggle"></div>
+
+  <!-- Progreso de scroll, como la barra de un reproductor -->
+  <div
+    id="scroll-progress"
+    class="absolute -bottom-px left-0 h-[2px] w-full origin-left scale-x-0 bg-yellow"
+    aria-hidden="true"
+  >
+  </div>
 </nav>
+
+<!-- Menú de pantalla completa -->
+<div
+  id="menu-overlay"
+  class="invisible fixed inset-0 z-[60] flex flex-col bg-ink opacity-0 transition-all duration-300"
+  aria-hidden="true"
+>
+  <div
+    class="flex items-center justify-between border-b border-line px-4 py-3"
+  >
+    <a href="/" aria-label="Necio — inicio">
+      <img
+        src="/images/logo_black2.png"
+        alt="Necio"
+        width="72"
+        height="60"
+        class="h-10 w-auto invert"
+      />
+    </a>
+    <button
+      type="button"
+      id="menu-close"
+      class="flex h-11 w-11 items-center justify-center border border-line text-cream transition-colors hover:border-pink hover:text-pink"
+      aria-label="Cerrar menú"
+    >
+      &#10005;
+    </button>
+  </div>
+
+  <nav
+    class="mx-auto flex w-full max-w-wrap flex-1 flex-col justify-center overflow-y-auto px-6 py-4"
+    aria-label="Menú"
+  >
+    {
+      menuLinks.map((link) => (
+        <a
+          href={link.href}
+          class="menu-link group flex items-baseline gap-4 border-b border-line py-3"
+        >
+          <span class="slate !text-[0.65rem]">{link.num}</span>
+          <span class="display text-4xl text-cream transition-colors group-hover:text-yellow sm:text-5xl">
+            {link.label}
+          </span>
+          <span class="display ml-auto text-2xl text-cream/20 transition-all group-hover:translate-x-1 group-hover:text-yellow">
+            &rarr;
+          </span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <div
+    class="menu-link mx-auto flex w-full max-w-wrap flex-wrap items-center justify-between gap-4 border-t border-line px-6 py-5"
+  >
+    <div class="flex gap-4 text-[0.65rem] uppercase tracking-widecaps">
+      <a href="/buscar" class="text-yellow transition-colors hover:text-cream"
+        >Buscar &#8981;</a
+      >
+      <a
+        href="https://www.instagram.com/necio.audiovisual/"
+        target="_blank"
+        rel="noopener"
+        class="text-cream/70 transition-colors hover:text-yellow">Instagram</a
+      >
+      <a
+        href="https://www.youtube.com/@necioaudiovisual"
+        target="_blank"
+        rel="noopener"
+        class="text-cream/70 transition-colors hover:text-yellow">YouTube</a
+      >
+      <a
+        href="mailto:necioaudiovisual@gmail.com"
+        class="text-cream/70 transition-colors hover:text-yellow">Correo</a
+      >
+    </div>
+    <span class="text-[0.65rem] uppercase tracking-widecaps text-muted">
+      Medellín, CO
+    </span>
+  </div>
+</div>
+
+<style>
+  /* Hamburguesa que morfa a X */
+  .burger-line {
+    position: absolute;
+    width: 1.25rem;
+    height: 2px;
+    background: #f4f1ea;
+    transition: transform 0.3s ease;
+  }
+  .burger-line:nth-child(1) {
+    transform: translateY(-4px);
+  }
+  .burger-line:nth-child(2) {
+    transform: translateY(4px);
+  }
+  #menu-toggle[aria-expanded="true"] .burger-line:nth-child(1) {
+    transform: rotate(45deg);
+  }
+  #menu-toggle[aria-expanded="true"] .burger-line:nth-child(2) {
+    transform: rotate(-45deg);
+  }
+
+  /* Overlay: los enlaces entran en cascada */
+  #menu-overlay.open {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .menu-link {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.45s ease,
+      transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  #menu-overlay.open .menu-link:nth-child(1) {
+    transition-delay: 0.05s;
+  }
+  #menu-overlay.open .menu-link:nth-child(2) {
+    transition-delay: 0.12s;
+  }
+  #menu-overlay.open .menu-link:nth-child(3) {
+    transition-delay: 0.19s;
+  }
+  #menu-overlay.open .menu-link:nth-child(4) {
+    transition-delay: 0.26s;
+  }
+  #menu-overlay.open .menu-link:nth-child(5) {
+    transition-delay: 0.33s;
+  }
+  #menu-overlay.open .menu-link:nth-child(6) {
+    transition-delay: 0.4s;
+  }
+  #menu-overlay.open .menu-link:nth-child(7) {
+    transition-delay: 0.47s;
+  }
+  #menu-overlay.open .menu-link:nth-child(8) {
+    transition-delay: 0.54s;
+  }
+
+  #menu-overlay.open .menu-link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-link,
+    .burger-line {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Barra de progreso de scroll
+  const progress = document.getElementById("scroll-progress");
+
+  function updateProgress() {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const ratio = max > 0 ? doc.scrollTop / max : 0;
+    progress!.style.transform = `scaleX(${ratio})`;
+  }
+
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  updateProgress();
+
+  // Menú móvil
+  const toggle = document.getElementById("menu-toggle") as HTMLButtonElement;
+  const close = document.getElementById("menu-close") as HTMLButtonElement;
+  const overlay = document.getElementById("menu-overlay") as HTMLElement;
+
+  function setMenu(open: boolean) {
+    overlay.classList.toggle("open", open);
+    overlay.setAttribute("aria-hidden", String(!open));
+    toggle.setAttribute("aria-expanded", String(open));
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+
+  toggle.addEventListener("click", () => setMenu(true));
+  close.addEventListener("click", () => setMenu(false));
+
+  overlay.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setMenu(false));
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("open")) {
+      setMenu(false);
+    }
+  });
+</script>

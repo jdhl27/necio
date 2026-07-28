@@ -1,41 +1,38 @@
 ---
-import BaseHead from "../components/Head/BaseHead.astro";
-import Nav from "../components/Nav.astro";
-import Footer from "../components/Footer/Footer.astro";
+import Layout from "../layouts/Layout.astro";
 
-let title = "How To Code";
-let description = "";
+const title = "404 | Necio";
+const description = "Esta página no existe.";
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead title={title} description={description} />
-  </head>
+<Layout title={title} description={description}>
+  <main class="mx-auto max-w-wrap px-4 py-20 text-center sm:px-6 lg:py-32">
+    <p class="slate justify-center">Corte — no quedó</p>
+    <h1 class="display mt-6 text-fluid-hero">
+      4<span class="text-yellow">0</span>4
+    </h1>
+    <p class="display mt-4 text-fluid-sub">
+      Esta página <span class="outline-text">no existe</span>
+    </p>
+    <p class="mx-auto mt-6 max-w-md text-muted">
+      No hay nada en esta dirección. Mientras decides a dónde ir, te dejamos
+      uno de nuestros videos.
+    </p>
 
-  <body class="bg-white text-black font-body leading-normal personality-casual">
-    <Nav />
+    <div class="mx-auto mt-12 aspect-video max-w-2xl border border-line">
+      <iframe
+        class="h-full w-full"
+        src="https://www.youtube.com/embed/EfPCRcUFjuQ?si=Fp6eSFTfu4Nk2pRx"
+        title="Video de Necio"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope;"
+        allowfullscreen></iframe>
+    </div>
 
-    <main class="py-12 lg:py-20">
-      <article class="max-w-6xl mx-auto px-3">
-        <header class="mx-auto max-w-3xl text-center content">
-          <h1 class="mb-4">(404) No existe eso que buscas</h1>
-          <p>
-            No hay mucho que ver aquí, salvo este video. No esperes a que se
-            acabe tu vida. Hay otras páginas. ¡Busca otra!
-          </p>
-          <div class="embed-responsive aspect-ratio-4/3">
-            <iframe
-              width="700"
-              height="500"
-              class="embed-responsive-item"
-              src="https://www.youtube.com/embed/EfPCRcUFjuQ?si=Fp6eSFTfu4Nk2pRx"
-              frameborder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-              allowfullscreen></iframe>
-          </div>
-        </header>
-      </article>
-    </main>
-    <Footer />
-  </body>
-</html>
+    <a
+      href="/"
+      class="display mt-12 inline-block bg-yellow px-8 py-4 text-lg text-ink transition-transform duration-200 hover:-translate-y-1 hover:rotate-1"
+    >
+      Volver al inicio &larr;
+    </a>
+  </main>
+</Layout>

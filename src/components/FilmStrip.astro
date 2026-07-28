@@ -1,0 +1,103 @@
+---
+import type { YouTubeVideo } from "../lib/youtube";
+import { decodeEntities } from "../lib/youtube";
+
+export interface Props {
+  videos: YouTubeVideo[];
+}
+
+const { videos } = Astro.props;
+const stills = videos.slice(0, 8);
+---
+
+{
+  stills.length > 0 && (
+    <div
+      class="strip border-y border-line py-5"
+      aria-label="Fotogramas de nuestros videos"
+      data-reveal
+    >
+      <div class="track">
+        {[0, 1].map((copy) => (
+          <span class="flex shrink-0 gap-4 pr-4" aria-hidden={copy === 1}>
+            {stills.map((video) => (
+              <a
+                href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
+                target="_blank"
+                rel="noopener"
+                tabindex={copy === 1 ? -1 : 0}
+                class="still block aspect-video h-28 shrink-0 overflow-hidden border border-line sm:h-36"
+              >
+                <img
+                  src={`https://i.ytimg.com/vi/${video.id.videoId}/mqdefault.jpg`}
+                  alt={decodeEntities(video.snippet.title)}
+                  loading="lazy"
+                  width="320"
+                  height="180"
+                  class="h-full w-full object-cover"
+                />
+              </a>
+            ))}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .strip {
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+  }
+
+  .track {
+    display: inline-flex;
+    animation: strip-scroll 55s linear infinite;
+  }
+
+  .strip:hover .track {
+    animation-play-state: paused;
+  }
+
+  .still img {
+    filter: grayscale(35%) contrast(1.05);
+    opacity: 0.85;
+    transition:
+      filter 0.4s ease,
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  .still:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  @keyframes strip-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track {
+      animation: none;
+    }
+  }
+</style>

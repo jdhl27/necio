@@ -1,74 +1,40 @@
 ---
-import BaseHead from "../components/Head/BaseHead.astro";
-import Nav from "../components/Nav.astro";
-import HomeHeader from "../components/HomeHeader.astro";
+import Layout from "../layouts/Layout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
 import Card from "../components/Card.astro";
-import Footer from "../components/Footer/Footer.astro";
 import EmailSignup from "../components/EmailSignup.astro";
+import { fetchVideos } from "../lib/youtube";
 
-interface MarkdownFrontmatter {
-  date: number;
-}
+const title = "Videos | Necio";
+const seoDescription =
+  "Todos los videos de Necio: reels, documental, publicidad y contenido audiovisual.";
 
-const title = "Videos";
-const description = "";
-const seoDescription = "Videos, edición, fotografia";
-
-const ID_CHANNEL_YOUTUBE = import.meta.env.PUBLIC_ID_CHANNEL_YOUTUBE;
-const API_KEY = import.meta.env.PUBLIC_API_KEY_GOOGLE;
-const URL_API = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${ID_CHANNEL_YOUTUBE}&part=snippet,id&order=date&maxResults=200`;
-
-const response = await fetch(URL_API);
-const data = await response.json();
-
-const filteredVideos = data?.items?.filter((item) => item.id.videoId);
-const updatedVideos = filteredVideos?.map((item) => ({
-  ...item,
-  snippet: {
-    ...item.snippet,
-    thumbnails: {
-      ...item.snippet.thumbnails,
-      default: {
-        ...item.snippet.thumbnails.default,
-        url: item.snippet.thumbnails.default.url.replace("default", "maxres2"),
-      },
-    },
-  },
-}));
+const videos = await fetchVideos();
 ---
 
-<html lang="es">
-  <head>
-    <BaseHead title={title} description={seoDescription} />
-  </head>
+<Layout title={title} description={seoDescription}>
+  <main class="mx-auto max-w-wrap px-4 py-16 sm:px-6 lg:py-24">
+    <SectionHeader
+      num={`Archivo — ${videos.length} videos`}
+      title="Todos los videos"
+      sub="Todo lo que hemos publicado, del más nuevo al más viejo."
+    >
+      <a
+        href="/buscar"
+        class="display border border-cream/40 px-6 py-3 text-lg transition-colors hover:border-yellow hover:text-yellow"
+      >
+        Buscar &rarr;
+      </a>
+    </SectionHeader>
 
-  <body class="bg-white text-black font-body leading-normal personality-casual">
-    <Nav />
+    <div
+      class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+      data-test="articles-section"
+      data-reveal-stagger
+    >
+      {videos.map((video) => <Card video={video} />)}
+    </div>
+  </main>
 
-    <main class="py-12 lg:py-20">
-      <article class="max-w-6xl mx-auto px-3">
-        <HomeHeader
-          title={title}
-          description={description}
-          style="text-shadow: 1px 1px 2px #40b29f;"
-        />
-        <section
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8"
-          data-test="articles-section"
-        >
-          {
-            updatedVideos?.map((video) => (
-              <div class="col-span-1">
-                <Card video={video} />
-              </div>
-            ))
-          }
-        </section>
-      </article>
-    </main>
-
-    <EmailSignup />
-
-    <Footer />
-  </body>
-</html>
+  <EmailSignup />
+</Layout>

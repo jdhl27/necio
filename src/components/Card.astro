@@ -1,67 +1,106 @@
 ---
 import dayjs from "dayjs";
+import "dayjs/locale/es";
+import { decodeEntities } from "../lib/youtube";
 
 export interface Props {
   video: any;
+  featured?: boolean;
+  /** Estira la imagen para llenar la altura de la fila (vecina del destacado) */
+  fill?: boolean;
 }
 
-const { video } = Astro.props;
+const { video, featured = false, fill = false } = Astro.props;
+
+const title = decodeEntities(video?.snippet?.title);
+const description = decodeEntities(video?.snippet?.description);
+const date = dayjs(video?.snippet?.publishedAt)
+  .locale("es")
+  .format("MMM YYYY");
+
+// El destacado (ancho doble) merece 1280px; el resto con 480px va sobrado
+const thumb = `https://i.ytimg.com/vi/${video?.id?.videoId}/${
+  featured ? "maxres2" : "hqdefault"
+}.jpg`;
 ---
 
 <a
   href={`https://www.youtube.com/watch?v=${video?.id?.videoId}`}
-  class="transition-all duration-75 ease-in-out h-full block relative top-0 hover:-top-2 shadow-lg hover:shadow-xl bg-white rounded-xl overflow-hidden group"
+  class:list={[
+    "group block h-full border border-line bg-surface transition-colors duration-300 hover:border-yellow",
+    fill && "flex flex-col",
+  ]}
   data-test="article-card"
   target="_blank"
+  rel="noopener"
 >
-  <div class="relative">
+  <div
+    class:list={[
+      "relative overflow-hidden",
+      fill ? "min-h-[14rem] flex-1" : "aspect-video",
+    ]}
+  >
     <img
-      class="squiggle"
-      src={video.snippet.thumbnails.default.url}
-      alt={video.snippet.title}
-      width="360"
-      height="192"
+      class:list={[
+        "h-full w-full object-cover transition-transform duration-500 group-hover:scale-105",
+        fill && "absolute inset-0",
+      ]}
+      src={thumb}
+      alt={title}
+      width="640"
+      height="360"
+      loading="lazy"
     />
-    <div class="absolute inset-0 flex justify-center items-center">
-      <div
-        class="p-2 rounded-full opacity-80 group-hover:opacity-100 transition-opacity"
+    {
+      featured && (
+        <span class="display absolute left-4 top-4 bg-yellow px-3 py-1 text-xs tracking-wider text-ink">
+          Estreno
+        </span>
+      )
+    }
+    <div
+      class="absolute inset-0 flex items-center justify-center bg-ink/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+    >
+      <span
+        class="flex h-16 w-16 items-center justify-center rounded-full bg-yellow text-ink"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          fill="#fdcb50"
           viewBox="0 0 24 24"
-          stroke-width="1"
-          stroke="currentColor"
-          class="w-24 h-24"
+          fill="currentColor"
+          class="ml-1 h-7 w-7"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
             d="M14.752 11.168l-6.96-3.992A1 1 0 006 8v8a1 1 0 001.792.832l6.96-3.992a1 1 0 000-1.664z"
           ></path>
         </svg>
-      </div>
+      </span>
     </div>
   </div>
-  <div class="py-6 px-8">
-    <h2 class="font-bold text-2xl leading-tight uppercase">
-      {video.snippet.title}
-    </h2>
-    <p class="text-xs text-gray-600 mt-4 flex items-center">
-      {dayjs(video.snippet.publishedAt).format("MM-DD-YYYY")}
+
+  <div class:list={[featured ? "p-6 lg:p-8" : "p-5"]}>
+    <p class="text-[0.65rem] uppercase tracking-widecaps text-muted">
+      &#9210; {date}
     </p>
-    <p class="text-xs text-gray-600 mt-4 flex items-center text-ellipsis whitespace-nowrap	overflow-hidden">
-      {video.snippet.description}
-    </p>
+    <h3
+      class:list={[
+        "display mt-2 leading-tight transition-colors group-hover:text-yellow",
+        featured ? "text-3xl lg:text-4xl" : "text-xl",
+      ]}
+    >
+      {title}
+    </h3>
+    {
+      description && (
+        <p
+          class:list={[
+            "mt-3 text-sm text-muted",
+            featured ? "line-clamp-3 max-w-2xl" : "line-clamp-2",
+          ]}
+        >
+          {description}
+        </p>
+      )
+    }
   </div>
 </a>
-
-<style>
-  img {
-    width: 100%;
-    object-fit: cover;
-  }
-  .absolute {
-    position: absolute;
-  }
-</style>

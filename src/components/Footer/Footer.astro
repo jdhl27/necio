@@ -1,35 +1,102 @@
 ---
 import Social from "./Social.astro";
-import Squiggle from "./Squiggle.astro";
+
+const year = new Date().getFullYear();
+
+const map = [
+  { href: "/", label: "Inicio" },
+  { href: "/#servicios", label: "Servicios" },
+  { href: "/videos", label: "Videos" },
+  { href: "/#aliados", label: "Aliados" },
+  { href: "/#nosotros", label: "El porqué" },
+  { href: "/galeria", label: "Galería" },
+  { href: "/#contacto", label: "Contacto" },
+];
 ---
 
-<footer class="py-6 lg:py-12 text-center flex flex-col items-center">
-  <img
-    class="mb-6"
-    src="/images/logo_black.png"
-    alt="Necio"
-    width="100"
-    height="100"
-  />
-  <div class="text-sm" data-test="footer-text">
-    &copy;<script type="text/javascript">
-      document.write(new Date().getFullYear());
-    </script> Necio
+<footer class="overflow-hidden border-t border-line">
+  <div class="mx-auto max-w-wrap px-4 pt-16 sm:px-6">
+    <div
+      class="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]"
+      data-reveal-stagger
+    >
+      <!-- Marca -->
+      <div>
+        <img
+          src="/images/logo_black.png"
+          alt="Necio"
+          width="88"
+          height="88"
+          class="h-20 w-auto invert"
+          loading="lazy"
+        />
+        <p class="display mt-6 max-w-sm text-3xl leading-tight">
+          Nos encantan las ideas necias<span class="text-pink">.</span>
+        </p>
+      </div>
+
+      <!-- Mapa -->
+      <nav aria-label="Mapa del sitio">
+        <p class="text-xs uppercase tracking-widecaps text-muted">Mapa</p>
+        <ul class="mt-5 space-y-3">
+          {
+            map.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-cream/80 transition-colors hover:text-yellow"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <!-- Redes -->
+      <div>
+        <p class="text-xs uppercase tracking-widecaps text-muted">Síguenos</p>
+        <div class="mt-5">
+          <Social />
+        </div>
+      </div>
+    </div>
+
+    <!-- Línea legal -->
+    <div
+      class="mt-14 flex flex-col items-start justify-between gap-3 border-t border-line py-5 text-xs text-muted sm:flex-row sm:items-center"
+    >
+      <span data-test="footer-text"
+        >&copy; {year} Necio &mdash; Productora audiovisual &middot; Medellín,
+        Colombia</span
+      >
+      <button
+        type="button"
+        id="back-to-top"
+        class="uppercase tracking-widecaps transition-colors hover:text-yellow"
+      >
+        Volver arriba &uarr;
+      </button>
+    </div>
   </div>
-  <Social />
+
+  <!-- Créditos finales: el nombre recortado por el borde -->
+  <div
+    class="pointer-events-none translate-y-[18%] select-none"
+    aria-hidden="true"
+  >
+    <p
+      class="display text-center text-[clamp(5rem,20vw,18rem)] leading-none text-cream/[0.05]"
+      data-reveal="wipe"
+    >
+      NECIO
+    </p>
+  </div>
 </footer>
 
-<Squiggle />
-
-<!-- Prism JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"
-></script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/toolbar/prism-toolbar.min.js"
-></script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"
-></script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
-></script>
+<script>
+  document.getElementById("back-to-top")?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>

@@ -1,0 +1,89 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+// Versiones blancas monocromáticas (public/images/allies), con la altura
+// calibrada por logo para que todos tengan el mismo peso visual
+const allies = [
+    {
+    name: "Casa Cúbica",
+    logo: "/images/allies/casa-cubica.png",
+    size: "h-11 sm:h-12",
+  },
+  {
+    name: "Comfama",
+    logo: "/images/allies/comfama.png",
+    size: "h-6 sm:h-6",
+  },
+  {
+    name: "Metro de Medellín",
+    logo: "/images/allies/metro-medellin.png",
+    size: "h-16 sm:h-20",
+  },
+  {
+    name: "Ciudad Frecuencia",
+    logo: "/images/allies/ciudad-frecuencia.png",
+    size: "h-10 sm:h-11",
+  },
+  {
+    name: "LeanTech",
+    logo: "/images/allies/leantech.png",
+    size: "h-14 sm:h-16",
+  },
+];
+---
+
+<section id="aliados" class="scroll-mt-24 border-t border-line bg-surface">
+  <div class="mx-auto max-w-wrap px-4 py-20 sm:px-6 lg:py-24">
+    <SectionHeader
+      num="03 — Aliados"
+      title="Han confiado en nosotros"
+      sub="Organizaciones y programas con los que hemos hecho proyectos."
+    />
+
+    <ul
+      class="grid grid-cols-2 border-l border-t border-line sm:grid-cols-3"
+      data-reveal-stagger
+    >
+      {
+        allies.map((ally) => (
+          <li
+            class="ally flex h-32 items-center justify-center border-b border-r border-line px-6 transition-colors duration-300 hover:bg-ink sm:h-40"
+            title={ally.name}
+          >
+            <img
+              src={ally.logo}
+              alt={ally.name}
+              loading="lazy"
+              class:list={["w-auto max-w-full object-contain", ally.size]}
+            />
+          </li>
+        ))
+      }
+      <!-- Celda final: invitación a ser el siguiente -->
+      <li
+        class="flex h-32 items-center justify-center border-b border-r border-line px-6 transition-colors duration-300 hover:bg-ink sm:h-40"
+      >
+        <a
+          href="#contacto"
+          class="display text-xl text-muted transition-colors hover:text-yellow"
+        >
+          ¿El tuyo? &rarr;
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ally img {
+    opacity: 0.55;
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  .ally:hover img {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+</style>

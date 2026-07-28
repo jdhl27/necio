@@ -1,28 +1,27 @@
 ---
-import '../../styles/main.scss'
+import "../../styles/main.scss";
 
 export interface Props {
-title: string;
-description: string;
+  title: string;
+  description: string;
 }
-const { title, description} = Astro.props;
+const { title, description } = Astro.props;
 
-let permalink = 'https://www.instagram.com/necio.audiovisual/';
+const permalink = "https://necio.netlify.app/";
 ---
 
-<!-- Global Metadata -->
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width" />
-<link rel="sitemap" href="/sitemap.xml"/>
-<link rel="icon" type="image/x-icon" href="/images/logo_black.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="apple-touch-icon" href="/images/favicon.png" />
+<meta name="theme-color" content="#0B0B10" />
 
-
-<!-- Primary Meta Tags -->
+<title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
-<title>{title}</title>
+<!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={permalink} />
 <meta property="og:title" content={title} />
@@ -36,9 +35,14 @@ let permalink = 'https://www.instagram.com/necio.audiovisual/';
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content="/images/social.jpg" />
 
-<!-- Prism CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-tomorrow.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/toolbar/prism-toolbar.min.css" />
+<!-- CDNs de imágenes: ahorra el saludo DNS/TLS en la primera foto -->
+<link rel="preconnect" href="https://i.ytimg.com" />
+<link rel="preconnect" href="https://res.cloudinary.com" />
 
-<!-- Fonts -->
-<!-- <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@900&family=Poppins:ital,wght@0,400;0,600;1,400;1,700&display=swap" rel="stylesheet"> -->
+<!-- Fuentes -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap"
+  rel="stylesheet"
+/>

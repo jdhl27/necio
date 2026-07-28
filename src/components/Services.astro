@@ -1,0 +1,101 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+const services = [
+  {
+    num: "01",
+    title: "Video",
+    text: "Reels, videos institucionales, documentales y publicidad. Nos encargamos de todo: la idea, el rodaje y la entrega.",
+    tags: "Reels · Documental · Publicidad · Marca",
+    icon: "video",
+  },
+  {
+    num: "02",
+    title: "Edición",
+    text: "¿Ya tienes el material grabado? Lo montamos, le damos ritmo y lo dejamos listo para publicar.",
+    tags: "Montaje · Postproducción · Motion",
+    icon: "edicion",
+  },
+  {
+    num: "03",
+    title: "Fotografía",
+    text: "Retratos, producto y cubrimiento de eventos. También hacemos las fotos fijas de los rodajes.",
+    tags: "Retrato · Producto · Eventos",
+    icon: "foto",
+  },
+  {
+    num: "04",
+    title: "Color & Sonido",
+    text: "Corrección de color y mezcla de sonido, para que lo que hicimos se vea y se escuche bien en cualquier pantalla.",
+    tags: "Etalonaje · Mezcla · Masterización",
+    icon: "sonido",
+  },
+];
+
+// Iconos de línea propios (24x24, trazo 1.5)
+const icons: Record<string, string> = {
+  video: `<rect x="2" y="7" width="13" height="11" rx="2"/><path d="m15 11 6-3.5v10L15 14"/><circle cx="6.5" cy="11" r="1" fill="currentColor" stroke="none"/>`,
+  edicion: `<path d="M12 3v18"/><path d="M3 8h5.5M15.5 8H21M3 13h5.5M15.5 13H21M3 18h5.5M15.5 18H21"/><path d="M10 3h4" stroke-width="2"/>`,
+  foto: `<rect x="2.5" y="7" width="19" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.8"/><path d="M8.5 7 10 4h4l1.5 3"/><circle cx="18.5" cy="10.5" r=".8" fill="currentColor" stroke="none"/>`,
+  sonido: `<path d="M4 10v4M8 6.5v11M12 3.5v17M16 6.5v11M20 10v4"/>`,
+};
+---
+
+<section
+  id="servicios"
+  class="mx-auto max-w-wrap scroll-mt-24 px-4 py-20 sm:px-6 lg:py-28"
+>
+  <SectionHeader
+    num="01 — Servicios"
+    title="Lo que hacemos"
+    sub="Esto es lo que sabemos hacer. Si tu proyecto necesita varias de estas cosas, mejor."
+  />
+
+  <div class="border-t border-line" data-reveal-stagger="left">
+    {
+      services.map((s) => (
+        <div class="group grid grid-cols-1 gap-5 border-b border-line py-9 transition-colors duration-300 hover:bg-surface md:grid-cols-12 md:items-center md:gap-6 md:py-11">
+          <!-- Número + icono -->
+          <div class="flex items-center gap-6 md:col-span-2 md:pl-4">
+            <span class="display text-lg text-cream/25 transition-colors duration-300 group-hover:text-pink">
+              {s.num}
+            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-10 w-10 text-muted transition-all duration-300 group-hover:-rotate-6 group-hover:text-yellow"
+              set:html={icons[s.icon]}
+            />
+          </div>
+
+          <!-- Título + especialidades -->
+          <div class="md:col-span-4">
+            <h3 class="display text-3xl transition-transform duration-300 group-hover:translate-x-2 lg:text-4xl">
+              {s.title}
+            </h3>
+            <p class="mt-2 text-[0.65rem] uppercase tracking-widecaps text-muted">
+              {s.tags}
+            </p>
+          </div>
+
+          <!-- Descripción -->
+          <p class="text-sm leading-relaxed text-muted md:col-span-5">
+            {s.text}
+          </p>
+
+          <!-- Flecha -->
+          <div class="hidden justify-end pr-4 md:col-span-1 md:flex">
+            <span class="display text-2xl text-cream/20 transition-all duration-300 group-hover:translate-x-1 group-hover:text-yellow">
+              &rarr;
+            </span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
